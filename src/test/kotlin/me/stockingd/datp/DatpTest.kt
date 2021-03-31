@@ -1,10 +1,13 @@
 package me.stockingd.datp
 
+import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.inspectors.forAll
 import io.kotest.matchers.shouldBe
 
 class DatpTest: DescribeSpec({
+
+    isolationMode = IsolationMode.InstancePerLeaf
 
     val datp = Datp()
 
@@ -82,6 +85,23 @@ class DatpTest: DescribeSpec({
             "(define radius 10)" to SExpr.Atom.Number(10.0),
             "(* pi (* radius radius))" to SExpr.Atom.Number(314.159),
             "(define circumference (* 2 pi radius))" to SExpr.Atom.Number(62.8318)
+        )
+            .map { (prog, value) -> datp.eval(prog).shouldBe(value) }
+    }
+
+    it("should execute functions") {
+        listOf(
+            "(define (square x) (* x x))" to SExpr.List(listOf(
+                SExpr.Atom.Symbol("square"),
+                SExpr.Atom.Symbol("x")
+            )),
+            "(define (double x) (+ x x))" to SExpr.List(listOf(
+                SExpr.Atom.Symbol("double"),
+                SExpr.Atom.Symbol("x")
+            )),
+            "(square (+ 1 2 3))" to SExpr.Atom.Number(36.0),
+            "(square (square 2))" to SExpr.Atom.Number(16.0),
+            "(square (double 5))" to SExpr.Atom.Number(100.0),
         )
             .map { (prog, value) -> datp.eval(prog).shouldBe(value) }
     }

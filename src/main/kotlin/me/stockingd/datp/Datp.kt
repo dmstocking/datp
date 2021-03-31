@@ -1,10 +1,12 @@
 package me.stockingd.datp
 
+import kotlinx.collections.immutable.persistentHashMapOf
+
 class Datp {
 
     val tokenizer = Tokenizer()
     val parser = Parser()
-    val evaluator = Evaluator()
+    val evaluator = Evaluator(null, persistentHashMapOf())
 
     fun eval(program: String): SExpr {
         return program.reader()

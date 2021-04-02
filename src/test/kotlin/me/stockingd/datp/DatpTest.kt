@@ -11,6 +11,12 @@ class DatpTest: DescribeSpec({
 
     val datp = Datp()
 
+    it("should support parsing all digits") {
+        (0..9).toList().forAll { digit ->
+            datp.eval("$digit").shouldBe(SExpr.Atom.Number(digit.toDouble()))
+        }
+    }
+
     it("should sum all numbers") {
         listOf(
             "(+ 1 2)" to 3.0,

@@ -15,6 +15,13 @@ class TokenReader(val list: List<Token>) {
     }
 }
 
+inline fun <reified T : Token> TokenReader.readOrThrow(onError: (Token?) -> Throwable) {
+    val token = read()
+    if (token !is T) {
+        throw onError(token)
+    }
+}
+
 class JavaReader(val javaReader: Reader) {
 
     fun read(): Char? {

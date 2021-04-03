@@ -19,12 +19,13 @@ class Parser {
                     .map { parse(reader) }
                     .toList()
                     .let { SExpr.List(it) }
-                    .also { reader.read()!! }
+                    .also { reader.readOrThrow<Token.Close> { Exception("Missing closing parenthesis. Found $it") } }
             }
             is Token.Symbol -> SExpr.Atom.Symbol(token.value)
             is Token.Number -> SExpr.Atom.Number(token.value)
             is Token.Str -> SExpr.Atom.Str(token.value)
-            else -> throw Exception("Unknown token while parsing $token")
+            Token.Close -> throw Exception("Extra closing paran ')'")
+            null -> throw Exception("Open paran '('")
         }
     }
 }

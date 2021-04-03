@@ -23,7 +23,7 @@ class Tokenizer {
             '(' -> Token.Open
             ')' -> Token.Close
             '"' -> {
-                generateSequence { reader.peek()!! }
+                generateSequence { reader.peek() }
                     .takeWhile { it != '"' }
                     .map { reader.read() }
                     .let { sequenceOf(c) + it }
@@ -32,7 +32,7 @@ class Tokenizer {
                     .also { reader.read() }
             }
             '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', -> {
-                generateSequence { reader.peek()!! }
+                generateSequence { reader.peek() }
                     .takeWhile { it.isDigit() || it == '.' }
                     .map { reader.read() }
                     .let { sequenceOf(c) + it }
@@ -42,8 +42,8 @@ class Tokenizer {
             }
             null -> null
             else -> {
-                generateSequence { reader.peek()!! }
-                    .takeWhile { it.isLetterOrDigit() }
+                generateSequence { reader.peek() }
+                    .takeWhile { !it.isWhitespace() && it != '(' && it != ')' }
                     .map { reader.read() }
                     .let { sequenceOf(c) + it }
                     .joinToString(separator = "")

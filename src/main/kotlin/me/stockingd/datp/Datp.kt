@@ -7,6 +7,7 @@ class Datp {
     private val evaluator = Evaluator(
         null,
         createBindings(
+            CoreModule(),
             NumberModule(),
         )
     )

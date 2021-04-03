@@ -26,16 +26,6 @@ class DatpTest: DescribeSpec({
         }
     }
 
-    it("should evaluate quote to the exact data in it") {
-        listOf(
-            "(quote 1)" to "1",
-            "(quote (1 2 3 4))" to "(1 2 3 4)",
-            "(quote (1 2 (a b) 4))" to "(1 2 (a b) 4)",
-        ).forAll { (program, value) ->
-            datp.eval(program).shouldBe(value)
-        }
-    }
-
     it("should save state and recall it") {
         listOf(
             "(define pi 3.14159)" to "3.14159",

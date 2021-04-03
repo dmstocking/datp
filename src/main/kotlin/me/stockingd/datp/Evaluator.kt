@@ -10,7 +10,6 @@ class Evaluator(private val parent: Evaluator?, private var bindings: Bindings) 
             is SExpr.Atom.Str -> expression
             is SExpr.List -> {
                 when (expression.values.first()) {
-                    SExpr.Atom.Symbol("quote") -> expression.values.drop(1).first()
                     SExpr.Atom.Symbol("define") -> {
                         val (sexpr, value) = expression
                             .values

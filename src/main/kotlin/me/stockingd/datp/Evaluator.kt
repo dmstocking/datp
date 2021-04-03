@@ -61,7 +61,7 @@ class Evaluator(private val parent: Evaluator?, private var bindings: Bindings) 
                 Evaluator(this, newScope).eval(impl)
             }
             is Binding.NativeFunction -> {
-                function.implementation(this, expression.values.drop(1).map { eval(it) })
+                function.implementation(this, expression.values.drop(1))
             }
         }
     }

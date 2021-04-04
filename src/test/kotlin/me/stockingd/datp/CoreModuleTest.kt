@@ -20,4 +20,16 @@ internal class CoreModuleTest : DescribeSpec({
             datp.eval(program).shouldBe(value)
         }
     }
+
+    it("should check if things are equal") {
+        listOf(
+            "(eq 1 1)" to "true",
+            "(eq (quote true) (quote true))" to "true",
+            "(eq (quote true) (quote ()))" to "nil",
+            "(eq (quote (1 2 3)) (quote (1 2 3)))" to "true",
+            "(eq (quote (1 2 3 4)) (quote (1 2 3)))" to "nil",
+        ).forAll { (program, value) ->
+            datp.eval(program).shouldBe(value)
+        }
+    }
 })

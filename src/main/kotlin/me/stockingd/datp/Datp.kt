@@ -33,7 +33,11 @@ class Datp {
             }
             is SExpr.Atom.Str -> "\"$value\""
             is SExpr.Atom.Symbol -> value
-            is SExpr.List -> "(${values.joinToString(separator = " ") { it.print() }})"
+            is SExpr.List -> if (values.size > 0) {
+                "(${values.joinToString(separator = " ") { it.print() }})"
+            } else {
+                "nil"
+            }
         }
     }
 }

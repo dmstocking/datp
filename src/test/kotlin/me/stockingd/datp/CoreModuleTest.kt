@@ -32,4 +32,14 @@ internal class CoreModuleTest : DescribeSpec({
             datp.eval(program).shouldBe(value)
         }
     }
+
+    it("should evaluate conditional statements") {
+        listOf(
+            "(cond ((quote true) 1))" to "1",
+            "(cond ((eq 1 0) 1) ((eq 1 1) 7))" to "7",
+            "(cond ((eq 1 0) 1))" to "nil",
+        ).forAll { (program, value) ->
+            datp.eval(program).shouldBe(value)
+        }
+    }
 })

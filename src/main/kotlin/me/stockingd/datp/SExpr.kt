@@ -9,4 +9,5 @@ sealed class SExpr {
     }
 }
 
-val nil = SExpr.List(emptyList())
+val TRUE = SExpr.Atom.Symbol("true")
+val NIL = SExpr.List(emptyList())

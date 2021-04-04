@@ -53,12 +53,12 @@ class Evaluator(private val parent: Evaluator?, private var bindings: Bindings) 
         return when (val function = getFunction(sexpr)) {
             is Binding.Constant -> throw Exception("Fetched function is not a function. Please report an issue.")
             is Binding.Function -> {
-                val (args, impl) = function
-                val values = expression.values.drop(1).map { eval(it) }
-                val arguments = args.values.map { it as SExpr.Atom.Symbol }
+                val (params, impl) = function
+                val arguments = expression.values.drop(1).map { eval(it) }
+                val parameters = params.values.map { it as SExpr.Atom.Symbol }
                 var newScope = bindings
-                values.zip(arguments) { value, arg ->
-                    newScope = newScope.put(arg, Binding.Constant(value))
+                arguments.zip(parameters) { arg, param ->
+                    newScope = newScope.put(param, Binding.Constant(arg))
                 }
                 Evaluator(this, newScope).eval(impl)
             }

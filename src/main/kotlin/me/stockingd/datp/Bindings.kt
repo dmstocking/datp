@@ -7,7 +7,7 @@ typealias Bindings = PersistentMap<SExpr.Atom.Symbol, Binding>
 
 sealed class Binding {
     data class Constant(val value: SExpr): Binding()
-    data class Function(val args: SExpr.List, val implementation: SExpr): Binding()
+    data class Function(val params: SExpr.List, val implementation: SExpr): Binding()
     data class NativeFunction(val implementation: (Evaluator, List<SExpr>) -> SExpr): Binding()
 }
 

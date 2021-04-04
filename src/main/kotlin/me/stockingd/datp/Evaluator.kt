@@ -2,8 +2,11 @@ package me.stockingd.datp
 
 class Evaluator(private val parent: Evaluator?, private var bindings: Bindings) {
 
-    fun eval(expression: SExpr): SExpr {
+    fun eval(expressions: List<SExpr>): SExpr {
+        return expressions.map { eval(it) }.last()
+    }
 
+    fun eval(expression: SExpr): SExpr {
         return when (expression) {
             is SExpr.Atom.Number -> expression
             is SExpr.Atom.Symbol -> evalConstant(expression)

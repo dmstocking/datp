@@ -2,12 +2,23 @@ package me.stockingd.datp
 
 class Parser {
 
-    fun parse(reader: TokenReader): SExpr {
-        return when(val token = reader.read()) {
+    fun parse(reader: TokenReader): List<SExpr> {
+        return generateSequence {
+            if (reader.peek() != null) {
+                parseExpression(reader)
+            } else {
+                null
+            }
+        }
+            .toList()
+    }
+
+    private fun parseExpression(reader: TokenReader): SExpr {
+        return when (val token = reader.read()) {
             Token.Open -> {
                 generateSequence { reader.peek() }
                     .takeWhile { it != Token.Close }
-                    .map { parse(reader) }
+                    .map { parseExpression(reader) }
                     .toList()
                     .let { SExpr.List(it) }
                     .also { reader.readOrThrow<Token.Close> { Exception("Missing closing parenthesis. Found $it") } }

@@ -19,7 +19,7 @@ class Datp {
             .let { TokenReader(it) }
             .let { parser.parse(it) }
             .let { evaluator.eval(it) }
-            .let { it.print() }
+            .print()
     }
 
     private fun SExpr.print(): String {

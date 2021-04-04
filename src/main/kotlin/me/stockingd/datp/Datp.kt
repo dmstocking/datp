@@ -8,6 +8,7 @@ class Datp {
         null,
         createBindings(
             CoreModule(),
+            ListModule(),
             NumberModule(),
         )
     )

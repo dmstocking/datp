@@ -11,6 +11,15 @@ internal class CoreModuleTest : DescribeSpec({
 
     val datp = Datp()
 
+
+    it("should apply arguments to function") {
+        listOf(
+            "(apply (quote +) (quote (1 2)))" to "3",
+        ).forAll { (program, value) ->
+            datp.eval(program).shouldBe(value)
+        }
+    }
+
     it("should evaluate quote to the exact data in it") {
         listOf(
             "(quote 1)" to "1",

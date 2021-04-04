@@ -4,11 +4,21 @@ class CoreModule : KotlinModule {
 
     override fun register(): Map<SExpr.Atom.Symbol, (Evaluator, List<SExpr>) -> SExpr> {
         return mapOf(
+            SExpr.Atom.Symbol("apply") to apply(),
             SExpr.Atom.Symbol("quote") to quote(),
             SExpr.Atom.Symbol("eq") to eq(),
             SExpr.Atom.Symbol("=") to eq(),
             SExpr.Atom.Symbol("cond") to cond(),
         )
+    }
+
+    private fun apply(): (Evaluator, List<SExpr>) -> SExpr {
+        return { evaluator, args ->
+            val (function, arguments) = args
+            evaluator.eval(SExpr.List(
+                listOf(evaluator.eval(function)) + (evaluator.eval(arguments) as SExpr.List).values
+            ))
+        }
     }
 
     private fun quote(): (Evaluator, List<SExpr>) -> SExpr {

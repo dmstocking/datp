@@ -14,13 +14,19 @@ class Evaluator(private val parent: Evaluator?, private var bindings: Bindings) 
             is SExpr.List -> {
                 when (expression.values.first()) {
                     SExpr.Atom.Symbol("define") -> {
-                        val (sexpr, value) = expression
+                        val definition = expression
                             .values
                             .drop(1)
-                            .take(2)
-                        when (sexpr) {
-                            is SExpr.List -> defineFunction(sexpr, value)
-                            is SExpr.Atom.Symbol -> defineConstant(sexpr, value)
+                            .first()
+                        when (definition) {
+                            is SExpr.List -> {
+                                val implementation = expression.values.drop(2)
+                                defineFunction(definition, implementation)
+                            }
+                            is SExpr.Atom.Symbol -> {
+                                val value = expression.values.drop(2).first()
+                                defineConstant(definition, value)
+                            }
                             else -> throw Exception("")
                         }
                     }
@@ -77,7 +83,7 @@ class Evaluator(private val parent: Evaluator?, private var bindings: Bindings) 
         } ?: throw Exception("$symbol is not defined.")
     }
 
-    private fun defineFunction(functionDefinition: SExpr.List, implementation: SExpr): SExpr {
+    private fun defineFunction(functionDefinition: SExpr.List, implementation: List<SExpr>): SExpr {
         val symbol = functionDefinition.values.first() as SExpr.Atom.Symbol
         val args = functionDefinition
             .values

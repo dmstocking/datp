@@ -1,5 +1,6 @@
 package me.stockingd.datp
 
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.inspectors.forAll
@@ -23,6 +24,37 @@ class DatpTest: DescribeSpec({
             "(/ (* 420 420) 420)" to "420",
         ).forAll { (program, value) ->
             datp.eval(program).shouldBe(value)
+        }
+    }
+
+    it("should define multi expression functions") {
+        datp.eval("""
+            (define (waste x) (+ x x) (* x x))
+            (waste 2)
+        """).shouldBe("4")
+    }
+
+    it("should define a function in a function") {
+        datp.eval("""
+            (define (square-double x)
+                (define (square x) (* x x))
+                (define (double x) (+ x x))
+                (square (double x))
+                )
+            (square-double 2)
+        """).shouldBe("16")
+    }
+
+    it("should not allow inner defined functions to escape") {
+        shouldThrow<Exception> {
+            datp.eval("""
+            (define (square-double x)
+                (define (square x) (* x x))
+                (define (double x) (+ x x))
+                (square (double x))
+                )
+            (square 2)
+        """)
         }
     }
 

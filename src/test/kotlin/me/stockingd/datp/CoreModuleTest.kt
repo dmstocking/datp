@@ -11,6 +11,10 @@ internal class CoreModuleTest : DescribeSpec({
 
     val datp = Datp()
 
+    it("should create lambdas") {
+        datp.eval("(lambda (x) (+ x x))")
+            .shouldBe("(LAMBDA (x) (+ x x))")
+    }
 
     it("should apply arguments to function") {
         listOf(
@@ -18,6 +22,11 @@ internal class CoreModuleTest : DescribeSpec({
         ).forAll { (program, value) ->
             datp.eval(program).shouldBe(value)
         }
+    }
+
+    it("should apply lambdas") {
+        datp.eval("(apply (lambda (x) (+ x x)) (quote (1)))")
+            .shouldBe("2")
     }
 
     it("should evaluate quote to the exact data in it") {

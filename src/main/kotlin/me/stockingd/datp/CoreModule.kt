@@ -4,6 +4,7 @@ class CoreModule : KotlinModule {
 
     override fun register(): Map<SExpr.Atom.Symbol, (Evaluator, List<SExpr>) -> SExpr> {
         return mapOf(
+            SExpr.Atom.Symbol("lambda") to lambda(),
             SExpr.Atom.Symbol("apply") to apply(),
             SExpr.Atom.Symbol("quote") to quote(),
             SExpr.Atom.Symbol("eq") to eq(),
@@ -12,12 +13,26 @@ class CoreModule : KotlinModule {
         )
     }
 
+    private fun lambda(): (Evaluator, List<SExpr>) -> SExpr {
+        return { _, args ->
+            val parameters = args
+                .first()
+                .let { it as SExpr.List }
+                .values
+                .map { it as SExpr.Atom.Symbol }
+            val implementation = args.drop(1)
+            SExpr.Atom.Lambda(parameters, implementation)
+        }
+    }
+
     private fun apply(): (Evaluator, List<SExpr>) -> SExpr {
         return { evaluator, args ->
             val (function, arguments) = args
-            evaluator.eval(SExpr.List(
-                listOf(evaluator.eval(function)) + (evaluator.eval(arguments) as SExpr.List).values
-            ))
+            evaluator.eval(
+                SExpr.List(
+                    listOf(evaluator.eval(function)) + (evaluator.eval(arguments) as SExpr.List).values
+                )
+            )
         }
     }
 

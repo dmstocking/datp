@@ -34,10 +34,13 @@ class Datp {
             }
             is SExpr.Atom.Str -> "\"$value\""
             is SExpr.Atom.Symbol -> value
-            is SExpr.List -> if (values.size > 0) {
+            is SExpr.List -> if (values.isNotEmpty()) {
                 "(${values.joinToString(separator = " ") { it.print() }})"
             } else {
                 "nil"
+            }
+            is SExpr.Atom.Lambda -> {
+                "(LAMBDA (${parameters.joinToString(separator = " ") { it.print() }}) ${implementation.joinToString(separator = " ") { it.print() }})"
             }
         }
     }

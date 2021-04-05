@@ -8,6 +8,7 @@ class Evaluator(private val parent: Evaluator?, private var bindings: Bindings) 
 
     fun eval(expression: SExpr): SExpr {
         return when (expression) {
+            is SExpr.Atom.Lambda -> expression
             is SExpr.Atom.Number -> expression
             is SExpr.Atom.Symbol -> evalConstant(expression)
             is SExpr.Atom.Str -> expression
@@ -55,7 +56,7 @@ class Evaluator(private val parent: Evaluator?, private var bindings: Bindings) 
     }
 
     private fun evalFunction(expression: SExpr.List): SExpr {
-        val sexpr = expression.values.first() as SExpr.Atom.Symbol
+        val sexpr = expression.values.first()
         return when (val function = getFunction(sexpr)) {
             is Binding.Constant -> throw Exception("Fetched function is not a function. Please report an issue.")
             is Binding.Function -> {
@@ -74,13 +75,21 @@ class Evaluator(private val parent: Evaluator?, private var bindings: Bindings) 
         }
     }
 
-    fun getFunction(symbol: SExpr.Atom.Symbol): Binding {
-        return when (val result = bindings[symbol]) {
-            is Binding.Constant ->
-                throw Exception("$symbol is defined as a constant.")
-            is Binding.Function, is Binding.NativeFunction -> result
-            null -> parent?.getFunction(symbol)
-        } ?: throw Exception("$symbol is not defined.")
+    fun getFunction(symbol: SExpr): Binding {
+        return when (symbol) {
+            is SExpr.Atom.Symbol -> {
+                when (val result = bindings[symbol]) {
+                    is Binding.Constant ->
+                        throw Exception("$symbol is defined as a constant.")
+                    is Binding.Function, is Binding.NativeFunction -> result
+                    null -> parent?.getFunction(symbol)
+                } ?: throw Exception("$symbol is not defined.")
+            }
+            is SExpr.Atom.Lambda -> {
+                Binding.Function(SExpr.List(symbol.parameters), symbol.implementation)
+            }
+            else -> throw Exception("$symbol is not a function.")
+        }
     }
 
     private fun defineFunction(functionDefinition: SExpr.List, implementation: List<SExpr>): SExpr {

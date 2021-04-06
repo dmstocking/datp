@@ -1,8 +1,11 @@
 import me.stockingd.datp.Datp
+import java.io.File
 
 fun main(args: Array<String>) {
     val datp = Datp()
-    println(datp.eval("(define pi 3.14159)\n" +
-            "(define radius 10)\n" +
-            "(* pi (* radius radius))"))
+    val file = args[0]
+    File(file)
+        .readText()
+        .let { datp.eval(it) }
+        .let { println(it) }
 }

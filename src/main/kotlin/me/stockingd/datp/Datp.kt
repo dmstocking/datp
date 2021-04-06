@@ -1,5 +1,7 @@
 package me.stockingd.datp
 
+import java.io.Reader
+
 class Datp {
 
     private val tokenizer = Tokenizer()

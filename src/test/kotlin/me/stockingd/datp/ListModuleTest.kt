@@ -34,4 +34,10 @@ internal class ListModuleTest : DescribeSpec({
             }
         }
     }
+
+    describe("cons") {
+        it("should create a list from one item") {
+            datp.eval("(cons 1 (cons 2 (cons 3 (quote ()))))").shouldBe("(1 2 3)")
+        }
+    }
 })

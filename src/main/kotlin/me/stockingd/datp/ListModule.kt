@@ -5,6 +5,7 @@ class ListModule : KotlinModule {
         return mapOf(
             SExpr.Atom.Symbol("car") to car(),
             SExpr.Atom.Symbol("cdr") to cdr(),
+            SExpr.Atom.Symbol("cons") to cons(),
         )
     }
 
@@ -29,6 +30,17 @@ class ListModule : KotlinModule {
                 .values
                 .drop(1)
                 .let { SExpr.List(it) }
+        }
+    }
+
+    private fun cons(): (Evaluator, List<SExpr>) -> SExpr {
+        return { evaluator, args ->
+            val (first, second) = args.take(2).map { evaluator.eval(it) }
+            if (second is SExpr.List) {
+                SExpr.List(listOf(first) + second.values)
+            } else {
+                SExpr.List(listOf(first, second))
+            }
         }
     }
 }

@@ -29,6 +29,13 @@ internal class CoreModuleTest : DescribeSpec({
             .shouldBe("2")
     }
 
+    it("should apply lambdas from defines") {
+        datp.eval("""
+            (define l (lambda (x) (+ x x)))
+            (apply l (quote (1)))
+        """).shouldBe("2")
+    }
+
     it("should evaluate quote to the exact data in it") {
         listOf(
             "(quote 1)" to "1",

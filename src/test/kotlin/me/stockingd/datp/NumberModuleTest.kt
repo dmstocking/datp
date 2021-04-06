@@ -46,4 +46,48 @@ internal class NumberModuleTest : DescribeSpec({
             datp.eval(program).shouldBe(value)
         }
     }
+
+    it("should evaluate less than") {
+        listOf(
+            "(lt 1 2)" to "true",
+            "(lt 1 2 3)" to "true",
+            "(lt 3 2)" to "nil",
+            "(lt 3 3)" to "nil",
+        ).forAll { (program, value) ->
+            datp.eval(program).shouldBe(value)
+        }
+    }
+
+    it("should evaluate less than or equal to") {
+        listOf(
+            "(le 1 2)" to "true",
+            "(le 1 2 3)" to "true",
+            "(le 3 2)" to "nil",
+            "(le 3 3)" to "true",
+        ).forAll { (program, value) ->
+            datp.eval(program).shouldBe(value)
+        }
+    }
+
+    it("should evaluate greater than") {
+        listOf(
+            "(gt 2 1)" to "true",
+            "(gt 3 2 1)" to "true",
+            "(gt 2 3)" to "nil",
+            "(gt 3 3)" to "nil",
+        ).forAll { (program, value) ->
+            datp.eval(program).shouldBe(value)
+        }
+    }
+
+    it("should evaluate greater than or equal to") {
+        listOf(
+            "(ge 2 1)" to "true",
+            "(ge 3 2 1)" to "true",
+            "(ge 2 3)" to "nil",
+            "(ge 3 3)" to "true",
+        ).forAll { (program, value) ->
+            datp.eval(program).shouldBe(value)
+        }
+    }
 })

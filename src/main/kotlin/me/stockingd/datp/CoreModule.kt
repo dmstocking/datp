@@ -10,6 +10,8 @@ class CoreModule : KotlinModule {
             SExpr.Atom.Symbol("eq") to eq(),
             SExpr.Atom.Symbol("=") to eq(),
             SExpr.Atom.Symbol("cond") to cond(),
+            SExpr.Atom.Symbol("list?") to isList(),
+            SExpr.Atom.Symbol("atom?") to isAtom(),
         )
     }
 
@@ -68,6 +70,26 @@ class CoreModule : KotlinModule {
                 ?.values
                 ?.let { (_, expression) -> evaluator.eval(expression) }
                 ?: NIL
+        }
+    }
+
+    private fun isList(): (Evaluator, List<SExpr>) -> SExpr {
+        return { evaluator, args ->
+            args
+                .map { evaluator.eval(it) }
+                .map { it is SExpr.List && it != NIL }
+                .fold(true) { a, b -> a && b }
+                .let { if (it) SExpr.Atom.Symbol("true") else NIL }
+        }
+    }
+
+    private fun isAtom(): (Evaluator, List<SExpr>) -> SExpr {
+        return { evaluator, args ->
+            args
+                .map { evaluator.eval(it) }
+                .map { it is SExpr.Atom || it == NIL }
+                .fold(true) { a, b -> a && b }
+                .let { if (it) SExpr.Atom.Symbol("true") else NIL }
         }
     }
 }

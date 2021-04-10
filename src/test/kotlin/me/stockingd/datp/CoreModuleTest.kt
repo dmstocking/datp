@@ -67,4 +67,26 @@ internal class CoreModuleTest : DescribeSpec({
             datp.eval(program).shouldBe(value)
         }
     }
+
+    it("should tell if something is an atom or not") {
+        listOf(
+            "(atom? 1234)" to "true",
+            "(atom? \"asdf\")" to "true",
+            "(atom? (quote ()))" to "true",
+            "(atom? (quote (1 2 3)))" to "nil",
+        ).forAll { (program, value) ->
+            datp.eval(program).shouldBe(value)
+        }
+    }
+
+    it("should tell if something is a list or not") {
+        listOf(
+            "(list? 1234)" to "nil",
+            "(list? \"asdf\")" to "nil",
+            "(list? (quote ()))" to "nil",
+            "(list? (quote (1 2 3)))" to "true",
+        ).forAll { (program, value) ->
+            datp.eval(program).shouldBe(value)
+        }
+    }
 })

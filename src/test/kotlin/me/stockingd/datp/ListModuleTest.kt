@@ -1,15 +1,9 @@
 package me.stockingd.datp
 
-import io.kotest.core.spec.IsolationMode
-import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.inspectors.forAll
 import io.kotest.matchers.shouldBe
 
-internal class ListModuleTest : DescribeSpec({
-
-    isolationMode = IsolationMode.InstancePerLeaf
-
-    val datp = Datp()
+internal class ListModuleTest : DatpSpec({
 
     describe("car") {
         it("should retrieve the first item in a list") {

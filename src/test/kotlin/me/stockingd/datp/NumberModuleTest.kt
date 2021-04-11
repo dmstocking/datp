@@ -1,15 +1,9 @@
 package me.stockingd.datp
 
-import io.kotest.core.spec.IsolationMode
-import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.inspectors.forAll
 import io.kotest.matchers.shouldBe
 
-internal class NumberModuleTest : DescribeSpec({
-
-    isolationMode = IsolationMode.InstancePerLeaf
-
-    val datp = Datp()
+internal class NumberModuleTest : DatpSpec({
 
     it("should sum all numbers") {
         listOf(

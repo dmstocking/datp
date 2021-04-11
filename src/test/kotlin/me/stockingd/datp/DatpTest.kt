@@ -1,16 +1,10 @@
 package me.stockingd.datp
 
 import io.kotest.assertions.throwables.shouldThrow
-import io.kotest.core.spec.IsolationMode
-import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.inspectors.forAll
 import io.kotest.matchers.shouldBe
 
-class DatpTest: DescribeSpec({
-
-    isolationMode = IsolationMode.InstancePerLeaf
-
-    val datp = Datp()
+class DatpTest: DatpSpec({
 
     it("should support parsing all digits") {
         (0..9).toList().forAll { digit ->

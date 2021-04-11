@@ -2,22 +2,35 @@ package me.stockingd.datp
 
 import java.io.Reader
 
-class Datp {
-
-    private val tokenizer = Tokenizer()
-    private val parser = Parser()
-    private val evaluator = Evaluator(
-        null,
-        createBindings(
-            CoreModule(),
-            ListModule(),
-            NumberModule(),
+class DatpFactory {
+    fun create(): Datp {
+        return Datp(
+            Tokenizer(),
+            Parser(),
+            Evaluator(
+                null,
+                createBindings(
+                    CoreModule(),
+                    ListModule(),
+                    NumberModule(),
+                )
+            )
         )
-    )
+    }
+}
+
+class Datp(
+    private val tokenizer: Tokenizer,
+    private val parser: Parser,
+    private val evaluator: Evaluator
+) {
 
     fun eval(program: String): String {
-        return program.reader()
-            .let { JavaReader(it) }
+        return eval(program.reader())
+    }
+
+    fun eval(reader: Reader): String {
+        return JavaReader(reader)
             .let { tokenizer.tokenize(it) }
             .let { TokenReader(it) }
             .let { parser.parse(it) }

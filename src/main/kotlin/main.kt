@@ -1,8 +1,8 @@
-import me.stockingd.datp.Datp
+import me.stockingd.datp.DatpFactory
 import java.io.File
 
 fun main(args: Array<String>) {
-    val datp = Datp()
+    val datp = DatpFactory().create()
     val file = args[0]
     File(file)
         .readText()

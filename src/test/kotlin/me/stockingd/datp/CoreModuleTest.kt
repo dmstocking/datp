@@ -1,15 +1,10 @@
 package me.stockingd.datp
 
 import io.kotest.core.spec.IsolationMode
-import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.inspectors.forAll
 import io.kotest.matchers.shouldBe
 
-internal class CoreModuleTest : DescribeSpec({
-
-    isolationMode = IsolationMode.InstancePerLeaf
-
-    val datp = Datp()
+internal class CoreModuleTest : DatpSpec({
 
     it("should create lambdas") {
         datp.eval("(lambda (x) (+ x x))")

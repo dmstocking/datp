@@ -16,6 +16,7 @@ class DatpFactory {
                 )
             )
         )
+            .also { DatpModule().load(it) }
     }
 }
 

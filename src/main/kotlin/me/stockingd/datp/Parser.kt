@@ -26,6 +26,10 @@ class Parser {
             is Token.Symbol -> SExpr.Atom.Symbol(token.value)
             is Token.Number -> SExpr.Atom.Number(token.value)
             is Token.Str -> SExpr.Atom.Str(token.value)
+            Token.Quote -> SExpr.List(listOf(
+                SExpr.Atom.Symbol("quote"),
+                parseExpression(reader)
+            ))
             Token.Close -> throw Exception("Extra closing paran ')'")
             null -> throw Exception("Open paran '('")
         }

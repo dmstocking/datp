@@ -72,4 +72,14 @@ class DatpTest: DatpSpec({
         )
             .map { (prog, value) -> datp.eval(prog).shouldBe(value) }
     }
+
+    it("should support ' as a sub for (quote ...) function") {
+        listOf(
+            "'(1 2 3)" to "(1 2 3)",
+            "'asdf" to "asdf",
+            "'(max 1 2 (a b))" to "(max 1 2 (a b))",
+            "'1234" to "1234"
+        )
+            .map { (prog, value) -> datp.eval(prog).shouldBe(value) }
+    }
 })

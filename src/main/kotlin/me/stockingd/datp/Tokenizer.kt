@@ -8,6 +8,7 @@ sealed class Token {
     class Str(val value: String): Token()
     class Number(val value: Double): Token()
     object Close: Token()
+    object Quote: Token()
 }
 
 class Tokenizer {
@@ -22,6 +23,7 @@ class Tokenizer {
         return when (val c = reader.read()) {
             '(' -> Token.Open
             ')' -> Token.Close
+            '\'' -> Token.Quote
             '"' -> {
                 generateSequence { reader.peek() }
                     .takeWhile { it != '"' }

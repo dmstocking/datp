@@ -3,7 +3,8 @@ package me.stockingd.datp
 class DatpModule {
 
     private val files = listOf(
-        "stdlib/nil.dapt"
+        "stdlib/nil.dapt",
+        "stdlib/min-max.dapt",
     )
 
     fun load(datp: Datp) {

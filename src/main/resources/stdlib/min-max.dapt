@@ -1,0 +1,13 @@
+(define (min a b)
+    (cond
+        ((lt a b) a)
+        ('true b)
+    )
+)
+
+(define (max a b)
+    (cond
+        ((gt a b) a)
+        ('true b)
+    )
+)

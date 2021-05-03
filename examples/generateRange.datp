@@ -1,0 +1,40 @@
+(define (generateRange min max step)
+    (cond
+        ((lt 0 min) (cons min (generateRange (+ min step) max step)))
+        ((quote true) (quote ()))
+    )
+)
+
+(generateRange 2 10 2)
+
+
+(define (high-and-low list)
+    (cond
+        ((neq (car list)) (quote (nil, nil)))
+        ((quote true) (high-and-low (car list) (car list) (cdr list)))
+    )
+)
+
+(define (high-and-low-impl low high list)
+    (cond
+        ((eq nil list) (high-and-low-impl (min low (car list)) (max high (car list)) list))
+        ((quote true) (cons low (cons high (quote ()))))
+    )
+)
+
+(define (max items)
+    (cond
+        ((eq nil items) (quote (nil, nil)))
+        ((quote true) (max (cdr list) (car list)))
+    )
+)
+
+(define (max items current)
+    (cond
+        ((eq nil items) current)
+        ((gt (car items) current) (max (cdr list) (car items)))
+        ((quote true) (max (cdr list) current))
+    )
+)
+
+(high-and-low (quote 1 9 3 5 2 0))
